@@ -21,6 +21,7 @@ export class DishdetailComponent implements OnInit {
   next: number;
   commentForm: FormGroup;
   comment: Comment;
+  dishRest = null;
 
   formErrors = {
     'author': '',
@@ -61,7 +62,7 @@ export class DishdetailComponent implements OnInit {
     this.dishservice.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
     this.route.params
       .switchMap((params: Params) => this.dishservice.getDish(+params['id']))
-      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); });
+      .subscribe(dish => { this.dish = dish; this.dishRest = dish; this.setPrevNext(dish.id); });
   }
 
   setPrevNext(dishId: number) {
@@ -100,7 +101,8 @@ export class DishdetailComponent implements OnInit {
       comment: '',
       author: '',
     });
-    this.dish.comments.push(this.comment);
+    this.dishRest.comments.push(this.comment);
+    this.dishRest.save().subscribe(dish => {this.dish = dish; console.log(this.dish);});
     
 
   }
