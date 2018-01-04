@@ -6,8 +6,7 @@ import { baseURL } from '../shared/baseurl';
 import { ProcesshttpService } from './processhttp.service';
 import { RestangularModule, Restangular } from 'ngx-restangular';
 
-import 'rxjs/add/operator/delay';
-import 'rxjs/add/observable/of';
+
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map'
 
@@ -21,7 +20,7 @@ export class DishService {
   }
 
   getDish(id: number): Observable<Dish> {
-    return  this.restangular.one('dishes',id).get();
+    return this.restangular.one('dishes',id).get();
   }
 
   getFeaturedDish(): Observable<Dish> {

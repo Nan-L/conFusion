@@ -1,23 +1,26 @@
 import { Injectable } from '@angular/core';
 import {Leader} from '../shared/leader';
-import {LEADERS} from '../shared/leaders';
+import { Observable } from 'rxjs/Observable';
+import { RestangularModule, Restangular } from 'ngx-restangular';
+import 'rxjs/add/operator/map'
 
 @Injectable()
 export class LeaderService {
 
-  constructor() { }
+  constructor(private restangular: Restangular) { }
 
-  getLeaders(): Promise<Leader[]> {
-  	return Promise.resolve(LEADERS);
+  getLeaders(): Observable<Leader[]> {
+  	return this.restangular.all('leaders').getList();
   }
 
-  getLeader(id: number): Promise<Leader> {
-  	return Promise.resolve(LEADERS.filter((leader) => (leader.id === id))[0]);
+  getLeader(id: number): Observable<Leader> {
+  	return this.restangular.one('leaders', id).get();
 
   }
 
-  getFeaturedLeader(): Promise<Leader> {
-  	return Promise.resolve(LEADERS.filter((leader) => (leader.featured))[0]);
+  getFeaturedLeader(): Observable<Leader> {
+  	return this.restangular.all('leaders').getList({featured: true})
+           .map(promotions => promotions[0]);
   }
 
 }

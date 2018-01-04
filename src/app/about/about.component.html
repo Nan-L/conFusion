@@ -54,15 +54,24 @@
       </div>
 
 
-        <div fxFlex>
-        <h2>Corporate Leadership</h2>
-        <md-list [@expand]>
-		<md-list-item *ngFor="let leader of leaders">
-			<img mdListAvatar src={{leader.image}} alt={{leader.name}}>
+    <div fxFlex>
+    <h2>Corporate Leadership</h2>
+    <md-list [@expand]>
+		  <md-list-item *ngFor="let leader of leaders">
+			<img mdListAvatar src="{{BaseURL + leader.image}}" alt={{leader.name}}>
 			<h2 md-line> {{leader.name | uppercase}} </h2>
 			<h3 md-line> {{leader.designation}} </h3>
 			<p md-line>{{leader.description}}</p>
-		</md-list-item>
+		  </md-list-item>
 		</md-list>
-       </div>
+    </div>
+
+    <div [hidden]="leaders || errMsg">
+      <md-spinner></md-spinner><h4>Loading . . . </h4>
+    </div>
+    <div *ngIf="errMsg">
+      <h2>Error</h2>
+      <h4>{{errMsg}}</h4>
+    </div>
+
 </div>
