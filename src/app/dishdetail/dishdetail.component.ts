@@ -6,13 +6,23 @@ import { DishService} from '../services/dish.service';
 import 'rxjs/add/operator/switchMap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Comment } from '../shared/comment';
-
+import { visibility, flyInOut, expand } from '../animations/app.animation';
 
 @Component({
   selector: 'app-dishdetail',
   templateUrl: './dishdetail.component.html',
   styleUrls: ['./dishdetail.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  host: {
+  '[@flyInOut]': 'true',
+  'style': 'display: block;'
+  },
+  animations: [
+    flyInOut(),
+    visibility(),
+    expand()
+  ]
+
 })
 export class DishdetailComponent implements OnInit {
   dish: Dish;
@@ -22,6 +32,7 @@ export class DishdetailComponent implements OnInit {
   commentForm: FormGroup;
   comment: Comment;
   dishRest = null;
+  visibility = 'shown';
 
   formErrors = {
     'author': '',
@@ -61,8 +72,8 @@ export class DishdetailComponent implements OnInit {
 
     this.dishservice.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
     this.route.params
-      .switchMap((params: Params) => this.dishservice.getDish(+params['id']))
-      .subscribe(dish => { this.dish = dish; this.dishRest = dish; this.setPrevNext(dish.id); });
+      .switchMap((params: Params) => { this.visibility = 'hidden'; return this.dishservice.getDish(+params['id']);})
+      .subscribe(dish => { this.dish = dish; this.dishRest = dish; this.setPrevNext(dish.id); this.visibility = 'shown';});
   }
 
   setPrevNext(dishId: number) {
