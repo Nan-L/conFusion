@@ -96,7 +96,7 @@
         </form>
       </div>
 
-      <div [hidden]="(!submissionStatus) || returnedFeedback">
+      <div [hidden]="(!submissionStatus)" *ngIf="!returnedFeedback">
       <md-spinner></md-spinner><h4>Submitting Form </h4>
       </div>
 
